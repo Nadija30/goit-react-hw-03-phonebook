@@ -15,7 +15,18 @@ export class App extends Component {
     ],
     filter: '',
   };
+  componentDidMount() {
+    const localContacs = JSON.parse(localStorage.getItem('contacts'));
+    if (localContacs) {
+      this.setState({ contacts: localContacs });
+    }
+  }
 
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts.length !== this.state.contacts.length) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
   onSubmitForm = data => {
     console.log(data);
     const isAlreadyExist = this.state.contacts.find(
